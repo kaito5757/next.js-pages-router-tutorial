@@ -17,9 +17,18 @@ export default function Home() {
           <a href="https://nextjs.org/learn">our Next.js tutorial</a>.)
         </p>
       </section>
-      <Link href="http://localhost:3000/posts/first-post">
-        first-post
-      </Link>
+      <ul className={utilStyles.headingMd}>
+        <li>       
+          <Link href="/posts/first-post">
+            first-post
+          </Link>
+        </li>
+        <li>
+          <Link href="/blogs">
+            blogs
+          </Link>
+        </li>
+      </ul>
     </Layout>
   )
 }
