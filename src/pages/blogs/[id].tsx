@@ -1,8 +1,10 @@
 import Layout from "@/components/Layout/layout";
 import { PostsDataType, getAllPostIds, getPostData } from "@/lib/posts";
 import { GetStaticProps } from "next";
+import Head from "next/head";
 import { ParsedUrlQuery } from "querystring";
-import { ComponentPropsWithoutRef } from "react";
+import DateComponent from '../../components/Date/date';
+import utilStyles from "@/styles/utils.module.css"
 
 interface BlogProps {
   postData: PostsDataType
@@ -23,11 +25,18 @@ export async function getStaticPaths() {
 export default function Blog(props: BlogProps) {
   return (
     <Layout>
-      {props.postData.title}
-      <br />
-      {props.postData.id}
-      <br />
-      {props.postData.date.toString()}
+      <Head>
+        <title>{ props.postData.title }</title>
+      </Head>
+      <article>
+        <h1 className={utilStyles.headingXl}>
+          { props.postData.title }
+        </h1>
+        <div className={utilStyles.lightText}>
+          <DateComponent date={props.postData.date} />
+        </div>
+        {props.postData.contentHtml && <div dangerouslySetInnerHTML={{ __html: props.postData.contentHtml }} />}
+      </article>
     </Layout>
   )
 }
@@ -39,7 +48,7 @@ export const getStaticProps = (async (context) => {
     date: new Date(),
   }
   if (context.params) {
-    postData = getPostData(context.params.id);
+    postData = await getPostData(context.params.id);
   }
 
   return {
